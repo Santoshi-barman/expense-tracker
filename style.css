@@ -1,0 +1,135 @@
+/* ==========================================================
+   style.css — presentation layer
+   Provided as part of the project scaffold. CSS is a separate
+   topic and is not required to complete the JavaScript phases.
+   ========================================================== */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 3rem 1rem;
+  background: #fffdf8;
+  color: #1a1a1a;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.app {
+  width: 100%;
+  max-width: 480px;
+  background: #fff;
+  border: 1px solid #e5e0d5;
+  border-radius: 14px;
+  padding: 1.8rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+h1 {
+  margin: 0 0 1.4rem;
+  font-size: 1.6rem;
+}
+
+/* ---------- Input row ---------- */
+.input-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.input-row input {
+  font: inherit;
+  padding: 0.6rem 0.8rem;
+  border: 2px solid #e5e0d5;
+  border-radius: 8px;
+  background: #fffdf8;
+  min-width: 0;
+}
+
+#itemInput   { flex: 2; }
+#amountInput { flex: 1; }
+
+.input-row input:focus {
+  outline: none;
+  border-color: #b45309;
+}
+
+#addBtn {
+  font: inherit;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background: #b45309;
+  color: #fff;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+#addBtn:hover { filter: brightness(1.12); }
+
+/* ---------- Validation message ---------- */
+.message {
+  min-height: 1.2em;
+  margin: 0.6rem 0 0;
+  font-size: 0.88rem;
+  color: #b91c1c;
+}
+
+/* ---------- Expense list ---------- */
+#expenseList {
+  list-style: none;
+  padding: 0;
+  margin: 1.2rem 0 0;
+}
+
+#expenseList li {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.7rem 0.9rem;
+  margin-bottom: 0.5rem;
+  background: #fffdf8;
+  border: 1px solid #e5e0d5;
+  border-radius: 8px;
+}
+
+#expenseList li .item-name { flex: 1; }
+
+#expenseList li .item-amount {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+#expenseList li button {
+  font: inherit;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #e5e0d5;
+  border-radius: 6px;
+  background: #fff;
+  color: #b91c1c;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+#expenseList li button:hover {
+  background: #b91c1c;
+  color: #fff;
+  border-color: #b91c1c;
+}
+
+/* ---------- Total ---------- */
+.total {
+  margin: 1.2rem 0 0;
+  padding-top: 0.9rem;
+  border-top: 2px solid #e5e0d5;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: right;
+}
+
+#total { color: #b45309; }

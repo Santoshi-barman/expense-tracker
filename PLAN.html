@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expense Tracker — Technical Plan</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+<div class="page">
+
+  <div class="kicker">Project · Technical Plan</div>
+  <h1>Expense Tracker 💰</h1>
+  <p class="subtitle">Scope, data model, and implementation plan.</p>
+
+  <div class="box box-info">
+    <b>Companion document:</b> a formatted version of this plan is available as
+    <code>docs/Expense-Tracker-Project-Overview.docx</code> for sharing.
+  </div>
+
+  <h2>1. Objective</h2>
+  <div class="box box-accent" style="text-align:center;font-size:1.05rem">
+    <i>"A browser-based application that records daily expenses and displays a running total."</i>
+  </div>
+
+  <h2>2. Scope</h2>
+
+  <h3>2.1 In scope — Version 1</h3>
+  <div class="journey">
+    <div class="journey-row"><span class="journey-tick">1</span><span class="journey-topic">Add expense</span><span class="journey-what">Capture a description and an amount from the user</span></div>
+    <div class="journey-row"><span class="journey-tick">2</span><span class="journey-topic">Display list</span><span class="journey-what">Render all recorded expenses on the page</span></div>
+    <div class="journey-row"><span class="journey-tick">3</span><span class="journey-topic">Automatic total</span><span class="journey-what">Recalculate and display the sum on every change</span></div>
+    <div class="journey-row"><span class="journey-tick">4</span><span class="journey-topic">Delete expense</span><span class="journey-what">Remove an individual entry and update the total</span></div>
+    <div class="journey-row"><span class="journey-tick">5</span><span class="journey-topic">Validation</span><span class="journey-what">Reject empty or non-numeric input with an on-screen message</span></div>
+  </div>
+
+  <h3>2.2 Deferred — enhancement backlog</h3>
+  <div class="journey">
+    <div class="journey-row"><span class="journey-tick">—</span><span class="journey-topic">Categories</span><span class="journey-what">Food / travel / bills, with category filtering</span></div>
+    <div class="journey-row"><span class="journey-tick">—</span><span class="journey-topic">Persistence</span><span class="journey-what">Retain data across sessions via localStorage</span></div>
+    <div class="journey-row"><span class="journey-tick">—</span><span class="journey-topic">Dates</span><span class="journey-what">Date per entry, with monthly views</span></div>
+    <div class="journey-row"><span class="journey-tick">—</span><span class="journey-topic">Reporting</span><span class="journey-what">Highest expense, spending trends</span></div>
+  </div>
+
+  <div class="box box-tip">
+    <b>Scope discipline:</b> eight candidate features were identified; five were selected for
+    Version 1 and the rest deferred. A small application that works end to end is more valuable
+    than a large one left unfinished.
+  </div>
+
+  <h2>3. User Interface</h2>
+
+  <pre><code>+------------------------------------------+
+|   My Expenses                            |   &lt;- h1
++------------------------------------------+
+|  [ Description ]  [ Amount ]    [ Add ]  |   &lt;- 2 inputs + button
+|  (validation message)                    |   &lt;- p
++------------------------------------------+
+|  Tea                   50       [ X ]    |   &lt;- li
+|  Taxi                 120       [ X ]    |   &lt;- li
+|  Groceries            200       [ X ]    |   &lt;- li
++------------------------------------------+
+|  Total:               370                |   &lt;- p
++------------------------------------------+</code></pre>
+
+  <h3>3.1 Element identifiers</h3>
+  <div class="journey">
+    <div class="journey-row"><span class="journey-tick">🏷️</span><span class="journey-topic">itemInput</span><span class="journey-what">Expense description field</span></div>
+    <div class="journey-row"><span class="journey-tick">🏷️</span><span class="journey-topic">amountInput</span><span class="journey-what">Expense amount field</span></div>
+    <div class="journey-row"><span class="journey-tick">🏷️</span><span class="journey-topic">addBtn</span><span class="journey-what">Submit control</span></div>
+    <div class="journey-row"><span class="journey-tick">🏷️</span><span class="journey-topic">message</span><span class="journey-what">Validation message container</span></div>
+    <div class="journey-row"><span class="journey-tick">🏷️</span><span class="journey-topic">expenseList</span><span class="journey-what">Container for rendered expense entries</span></div>
+    <div class="journey-row"><span class="journey-tick">🏷️</span><span class="journey-topic">total</span><span class="journey-what">Calculated total display</span></div>
+  </div>
+
+  <h2>4. Data Model</h2>
+
+  <p>A single expense is an object; the collection is an array of such objects.</p>
+
+  <pre><code>// A single expense
+{ item: "Tea", amount: 50 }
+
+// The full collection
+const expenses = [
+  { item: "Tea",       amount: 50 },
+  { item: "Taxi",      amount: 120 },
+  { item: "Groceries", amount: 200 }
+];</code></pre>
+
+  <h3>4.1 Operations</h3>
+  <table style="font-family: var(--font-ui); font-size: 0.92rem; border-collapse: collapse; width: 100%;">
+    <tr style="background: var(--code-bg);">
+      <th style="border:1px solid var(--border); padding:0.5rem;">Feature</th>
+      <th style="border:1px solid var(--border); padding:0.5rem;">Implementation approach</th>
+    </tr>
+    <tr>
+      <td style="border:1px solid var(--border); padding:0.5rem;">Add expense</td>
+      <td style="border:1px solid var(--border); padding:0.5rem;">Append a new object to the array, then re-render</td>
+    </tr>
+    <tr>
+      <td style="border:1px solid var(--border); padding:0.5rem;">Display list</td>
+      <td style="border:1px solid var(--border); padding:0.5rem;">Iterate the array, creating one element per entry</td>
+    </tr>
+    <tr>
+      <td style="border:1px solid var(--border); padding:0.5rem;">Calculate total</td>
+      <td style="border:1px solid var(--border); padding:0.5rem;">Accumulate the <code>amount</code> property across entries</td>
+    </tr>
+    <tr>
+      <td style="border:1px solid var(--border); padding:0.5rem;">Delete expense</td>
+      <td style="border:1px solid var(--border); padding:0.5rem;">Remove the entry and its element, then recalculate</td>
+    </tr>
+  </table>
+
+  <div class="box box-warn">
+    <b>Known constraint:</b> an input element's <code>value</code> property always returns a
+    string. The amount must be converted with <code>Number()</code> before any arithmetic,
+    otherwise the <code>+</code> operator performs string concatenation instead of addition.
+  </div>
+
+  <h2>5. Technology</h2>
+  <div class="journey">
+    <div class="journey-row"><span class="journey-tick">📄</span><span class="journey-topic">index.html</span><span class="journey-what">Document structure and element identifiers</span></div>
+    <div class="journey-row"><span class="journey-tick">🎨</span><span class="journey-topic">style.css</span><span class="journey-what">Presentation layer</span></div>
+    <div class="journey-row"><span class="journey-tick">⚙️</span><span class="journey-topic">app.js</span><span class="journey-what">Application logic and event handling</span></div>
+  </div>
+  <p style="font-family: var(--font-ui); font-size: 0.95rem;">
+    No frameworks or third-party libraries. No build step, server, or database required.
+  </p>
+
+  <h2>6. Implementation Plan</h2>
+  <div class="journey">
+    <div class="journey-row"><span class="journey-tick">1</span><span class="journey-topic">Structure</span><span class="journey-what">Complete HTML with all identifiers — no scripting</span></div>
+    <div class="journey-row"><span class="journey-tick">2</span><span class="journey-topic">Add</span><span class="journey-what">Capture input and append an entry to the list</span></div>
+    <div class="journey-row"><span class="journey-tick">3</span><span class="journey-topic">Total</span><span class="journey-what">Calculate and display the running total</span></div>
+    <div class="journey-row"><span class="journey-tick">4</span><span class="journey-topic">Delete</span><span class="journey-what">Per-entry removal with total recalculation</span></div>
+    <div class="journey-row"><span class="journey-tick">5</span><span class="journey-topic">Validation</span><span class="journey-what">Reject invalid input with a visible message</span></div>
+    <div class="journey-row"><span class="journey-tick">6</span><span class="journey-topic">Styling</span><span class="journey-what">Layout and visual polish</span></div>
+  </div>
+  <div class="box box-tip">
+    Each phase is verified in the browser before the next begins. A phase is complete only when
+    its feature works end to end.
+  </div>
+
+  <h2>7. Test Cases</h2>
+  <ol style="font-family: var(--font-ui); font-size: 0.95rem;">
+    <li>A valid expense is added and appears in the list.</li>
+    <li>The total equals the arithmetic sum of all listed amounts.</li>
+    <li>An empty description or amount is rejected with a visible message.</li>
+    <li>A non-numeric amount does not corrupt the total.</li>
+    <li>Deleting one entry removes only that entry and updates the total.</li>
+    <li>Deleting all entries returns the total to zero.</li>
+  </ol>
+
+  <hr>
+  <p style="font-family: var(--font-ui); font-size: 0.9rem; color: var(--ink-soft);">
+    <a href="../index.html">Course Home</a> ·
+    <a href="../reference/project-workflow.html">Project Workflow</a> ·
+    <a href="../reference/array-methods.html">Array Methods</a> ·
+    <a href="../reference/dom.html">DOM</a>
+  </p>
+
+</div>
+</body>
+</html>
