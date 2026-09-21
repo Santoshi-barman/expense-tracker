@@ -3,8 +3,7 @@
 A browser-based application for recording daily expenses and tracking a running total.
 Built with plain HTML, CSS and JavaScript — no frameworks, no build step, no dependencies.
 
-**Live demo:** _(link to be added after deployment)_
-
+**Live demo:** https://santoshi-barman.github.io/expense-tracker/
 ---
 
 ## Features
@@ -29,7 +28,7 @@ No installation or server is required — the application runs directly in the b
 ## Running locally
 
 ```bash
-git clone https://github.com/<your-username>/expense-tracker.git
+git clone https://github.com/<Santoshi-barman>/expense-tracker.git
 cd expense-tracker
 ```
 
