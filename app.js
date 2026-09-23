@@ -1,15 +1,15 @@
-console.log("Expense Tracker loaded");
-
 const itemInput = document.getElementById("itemInput");
 const amountInput = document.getElementById("amountInput");
-const addBtn = document.getElementById("addBtn");
+const expenseForm = document.getElementById("expenseForm");
 const expenseList = document.getElementById("expenseList");
 const totalDisplay = document.getElementById("total");
 const message = document.getElementById("message");
 
 let expenses = [];
 
-addBtn.addEventListener("click", function () {
+expenseForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
   const item = itemInput.value.trim();
   if (item === "") {
     message.textContent = "Please enter a description.";
@@ -27,11 +27,12 @@ addBtn.addEventListener("click", function () {
   const expense = { item: item, amount: amount };
 
   expenses.push(expense);
-  saveExpenses();                          // 💾 naya
+  saveExpenses();
   renderList();
 
   itemInput.value = "";
   amountInput.value = "";
+  itemInput.focus();
 });
 
 function renderList() {
@@ -45,10 +46,11 @@ function renderList() {
 
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "X";
+    deleteBtn.type = "button";
 
     deleteBtn.addEventListener("click", () => {
       expenses.splice(index, 1);
-      saveExpenses();                      // 💾 naya
+      saveExpenses();
       renderList();
     });
 
@@ -61,9 +63,10 @@ function renderList() {
   totalDisplay.textContent = total;
 }
 
-function saveExpenses() {                  // 💾 naya
+function saveExpenses() {
   localStorage.setItem("expenses", JSON.stringify(expenses));
 }
+
 const saved = localStorage.getItem("expenses");
 
 if (saved !== null) {

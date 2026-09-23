@@ -11,11 +11,11 @@
 
   <h1>My Expenses</h1>
 
-  <div class="input-row">
-    <input id="itemInput" type="text" placeholder="Description">
-    <input id="amountInput" type="number" placeholder="Amount">
-    <button id="addBtn">Add</button>
-  </div>
+  <form id="expenseForm" class="input-row">
+    <input id="itemInput" type="text" placeholder="Description" autocomplete="off">
+    <input id="amountInput" type="number" placeholder="Amount" autocomplete="off">
+    <button id="addBtn" type="submit">Add</button>
+  </form>
 
   <p id="message" class="message"></p>
 
